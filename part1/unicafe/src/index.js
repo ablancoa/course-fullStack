@@ -15,8 +15,17 @@ const Feedback = ({handleClickGood, handleClickNeutral, handleClickBad}) => {
 }
 
 const Statics = ({good, neutral, bad, value}) => {
+
+  if (!value.length) {
+    return (
+      <>
+        <p>No feedback given</p>
+      </>
+    )
+  }
+
   const average = value.reduce((a,b) => a + b, 0)
-  const positive = (good/value.length)*100 || 0
+  const positive = (good/value.length)*100
 
   return (
     <>
@@ -25,7 +34,7 @@ const Statics = ({good, neutral, bad, value}) => {
       <p>neutral: {neutral}</p>
       <p>bad: {bad}</p>
       <p>all: {value.length}</p>
-      <p>average: {average/value.length || 0}</p>
+      <p>average: {average/value.length}</p>
       <p>positive: {positive}%</p>
     </>
   )
@@ -51,6 +60,7 @@ const App = () => {
     setValue(value.concat(-1))
   }
 
+  
   return (
     <div>
       <Feedback handleClickGood={handleClickGood} handleClickNeutral={handleClickNeutral} handleClickBad={handleClickBad} />
