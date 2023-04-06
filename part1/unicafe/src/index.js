@@ -39,12 +39,14 @@ const Statics = ({good, neutral, bad, value}) => {
     <>
       <h1>statics</h1>
       <table>
-        <StaticLine text='good' value={good} />
-        <StaticLine text='neutral' value={neutral} />
-        <StaticLine text='bad' value={bad} />
-        <StaticLine text='all' value={value.length} />
-        <StaticLine text='average' value={average/value.length} />
-        <StaticLine text='positive' value={`${positive}%`} />
+        <tbody>
+          <StaticLine text='good' value={good} />
+          <StaticLine text='neutral' value={neutral} />
+          <StaticLine text='bad' value={bad} />
+          <StaticLine text='all' value={value.length} />
+          <StaticLine text='average' value={average/value.length} />
+          <StaticLine text='positive' value={`${positive}%`} />
+        </tbody>
       </table>
     </>
   )
