@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
 
 const Button = ({action, text}) => <button onClick={action}>{text}</button>
+const StaticLine = ({text, value}) => <p>{text} {value}</p>
 
 const Feedback = ({handleClickGood, handleClickNeutral, handleClickBad}) => {
   return (
@@ -30,12 +31,12 @@ const Statics = ({good, neutral, bad, value}) => {
   return (
     <>
       <h1>statics</h1>
-      <p>good: {good}</p>
-      <p>neutral: {neutral}</p>
-      <p>bad: {bad}</p>
-      <p>all: {value.length}</p>
-      <p>average: {average/value.length}</p>
-      <p>positive: {positive}%</p>
+      <StaticLine text='good' value={good} />
+      <StaticLine text='neutral' value={neutral} />
+      <StaticLine text='bad' value={bad} />
+      <StaticLine text='all' value={value.length} />
+      <StaticLine text='average' value={average/value.length} />
+      <StaticLine text='positive' value={`${positive}%`} />
     </>
   )
 }
