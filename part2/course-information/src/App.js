@@ -1,4 +1,5 @@
-import Course from "./components/Course"
+import Course from "./components/Course";
+import Total from "./components/Total";
 
 const Header = ({course}) => {
   return (
@@ -6,12 +7,7 @@ const Header = ({course}) => {
   )
 }
 
-const Total = ({parts}) => {
-  const [one, two, three] = parts
-  return (
-    <p>Number of exercises { one.exercises + two.exercises + three.exercises }</p>
-  )
-}
+
 
 const App = () => {
   const course = {
@@ -31,6 +27,11 @@ const App = () => {
       {
         name: 'State of a component',
         exercises: 14,
+        id: 3,
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
         id: 3,
       },
     ],
