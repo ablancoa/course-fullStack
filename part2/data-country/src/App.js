@@ -15,7 +15,13 @@ function App() {
 
   const handleSearch = (event) => {
     const filteredName = [...countries].filter(country =>(country.name.official).toLowerCase().includes((event.target.value).toLowerCase()));
-    filteredName.length === countries.length ? setCountryToShow([]) : setCountryToShow(filteredName)
+    const listOfNames = filteredName.map(item => {
+      return {
+        ...item,
+        show: false
+      }
+    })
+    listOfNames.length === countries.length ? setCountryToShow([]) : setCountryToShow(listOfNames)
   }
 
   return (
@@ -23,7 +29,7 @@ function App() {
       <div className="App">
         <p>find country: <input type="text" onChange={handleSearch}/></p>
       </div>
-      {countryToShow.length > 10 ? <p>To manny matches, specify another filter</p> : <CountryList countries={countryToShow} />}
+      {countryToShow.length > 10 ? <p>To manny matches, specify another filter</p> : <CountryList countries={countryToShow}/>}
     </>
   );
 }

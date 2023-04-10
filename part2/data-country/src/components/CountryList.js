@@ -1,14 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CountryDetail from './CountryDetail';
 
 export default function CountryList({countries}) {
+
+  const [indexToShow, setIndexToShow] = useState(null)
+
+  const handleShow = (name) => {
+    const index = countries.findIndex(item => item.name.official === name);
+    setIndexToShow(index)
+  }
   return (
     <div>
-      {countries.length !== 1 ? (
       <ul>
-        {countries.map(country => <li key={country.name.official}>{country.name.official}</li>)}
+        {countries.map((country) =>
+        <div key={country.name.official}>
+          <li>{country.name.official} <button onClick={() => handleShow(country.name.official)}>show</button></li>
+        </div>
+        )}
       </ul>
-      ): <CountryDetail country={countries[0]} />}
+      {(indexToShow >= 0) ? <CountryDetail country={countries[indexToShow]} /> : <p>Set show</p>}
+ 
     </div>
   )
 }
