@@ -18,7 +18,7 @@ export default function CountryList({countries}) {
         </div>
         )}
       </ul>
-      {(indexToShow >= 0) ? <CountryDetail country={countries[indexToShow]} /> : <p>Set show</p>}
+      {indexToShow != null ? <CountryDetail country={countries[indexToShow]} /> : <p>Set show</p>}
  
     </div>
   )
