@@ -6,24 +6,9 @@
       "id": 1
     },
     {
-      "name": "Prueba create",
-      "number": "123123123",
-      "id": 4
-    },
-    {
-      "name": "asdasda",
-      "number": "123123123",
-      "id": 5
-    },
-    {
       "name": "Pedro Perez",
       "number": "95656589",
       "id": 6
-    },
-    {
-      "name": "test test",
-      "number": "498987",
-      "id": 7
     }
   ]
 }

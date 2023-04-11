@@ -12,7 +12,13 @@ code {
     monospace;
 }
 
-.notification {
+.notification-success {
+  color: green;
+  border: 2px solid green;
+  background-color: lightgreen;
+}
+
+.notification-fail {
   color: red;
   border: 2px solid red;
   background-color: lightcoral;

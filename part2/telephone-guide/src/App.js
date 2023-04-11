@@ -19,8 +19,8 @@ const App = () => {
     .catch(error => console.log(error))
   },[])
 
-  const launchNotification = (action, name) => {
-    setNotification({action, name})
+  const launchNotification = (message, type) => {
+    setNotification({message, type})
     setTimeout(() => {
       setNotification(null)
     }, 3000)
@@ -37,10 +37,10 @@ const App = () => {
       .then(
         () => {
           setPersons(persons.filter(contact => contact.id !== person.id))
-          launchNotification('Delete', person.name)
+          launchNotification(`Deleted ${person.name}`, 'success')
         }
         )
-      .catch(error => console.log(error))
+      .catch(error => launchNotification('Already deleted from repository, please update page', 'fail'))
     }
   }
 
@@ -48,7 +48,7 @@ const App = () => {
     addContact(URL, person)
     .then(newPerson => {
       setPersons(persons.concat(newPerson))
-      launchNotification('Added', person.name)
+      launchNotification(`Added ${person.name}`, 'success')
     }) 
     .catch(error => console.log(error))
   }
@@ -58,7 +58,7 @@ const App = () => {
     updateContact(URL, updatedUser.id, updatedUser)
     .then(response => {
       setPersons(persons.map(person => person.id !== user.id ? person : response))
-      launchNotification('Updated', user.name)
+      launchNotification(`Updated ${user.name}`, 'success')
     })
     .catch(error => console.log(error))
   }
@@ -70,7 +70,7 @@ const App = () => {
       {persons && 
       <>
         <h2>Phonebook</h2>
-        {notification !== null && <Notification action={notification.action} name={notification.name}/>}
+        {notification !== null && <Notification type={notification.type} message={notification.message}/>}
         <Filter handleFilter={handleFilter} />
         <h2>add a new</h2>
         <PersonForm persons={persons} updatedContact={updatedContact} addToPhonelist={addToPhonelist}/>
