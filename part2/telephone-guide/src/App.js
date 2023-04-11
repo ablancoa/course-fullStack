@@ -33,7 +33,7 @@ const App = () => {
         <h2>add a new</h2>
         <PersonForm persons={persons} setPersons={setPersons} baseURL={URL}/>
         <h2>Numbers</h2>
-        <Persons listToShow={listToShow} />
+        <Persons listToShow={listToShow} baseURL={URL}/>
       </>}
     </div>
   )
