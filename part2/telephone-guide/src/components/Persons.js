@@ -1,13 +1,7 @@
 import React from 'react';
-import phoneList from '../services/phoneList';
 
-export default function Persons({listToShow, baseURL}) {
-  const handleDelete = (id) => {
-    if (window.confirm('Delete contact')){
-      phoneList.deleteContact(baseURL, id)
-      .then(status => console.log(status))
-    }
-  }
+export default function Persons({listToShow, handleDelete}) {
+
   return (
     <div>
       {listToShow.map((person) => (

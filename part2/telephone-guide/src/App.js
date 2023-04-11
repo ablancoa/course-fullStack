@@ -9,7 +9,7 @@ const App = () => {
   const [nameToShow, setNameToShow] = useState([])
 
   const URL = 'http://localhost:3001/persons'
-  const {getContacts} = phoneList
+  const {getContacts, deleteContact} = phoneList
 
   useEffect(() => {
     getContacts(URL)
@@ -20,6 +20,14 @@ const App = () => {
   const handleFilter = (event) => {
     const filteredName = [...persons].filter(person =>(person.name).toLowerCase().includes((event.target.value).toLowerCase()))
     setNameToShow(filteredName);
+  }
+
+  const handleDelete = (id) => {
+    if (window.confirm('Delete contact')){
+      phoneList.deleteContact(URL, id)
+      .then(setPersons(persons.filter(contact => contact.id !== id)))
+      .catch(error => console.log(error))
+    }
   }
 
   const listToShow = nameToShow.length !== 0 ? nameToShow : persons
@@ -33,7 +41,7 @@ const App = () => {
         <h2>add a new</h2>
         <PersonForm persons={persons} setPersons={setPersons} baseURL={URL}/>
         <h2>Numbers</h2>
-        <Persons listToShow={listToShow} baseURL={URL}/>
+        <Persons listToShow={listToShow} baseURL={URL} handleDelete={handleDelete}/>
       </>}
     </div>
   )

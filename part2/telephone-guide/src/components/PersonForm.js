@@ -8,6 +8,7 @@ export default function PersonForm({persons, setPersons, baseURL}) {
 
   const addToPhonelist = (person) => {
     phoneList.addContact(baseURL, person)
+    .then(newPerson => setPersons(persons.concat(newPerson))) 
     .catch(error => console.log(error))
   }
 
@@ -26,7 +27,7 @@ export default function PersonForm({persons, setPersons, baseURL}) {
     }
     else{
       addToPhonelist(newPerson)
-      setPersons(persons.concat(newPerson))    
+          
     }
   }
 
