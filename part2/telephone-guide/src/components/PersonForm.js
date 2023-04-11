@@ -12,6 +12,13 @@ export default function PersonForm({persons, setPersons, baseURL}) {
     .catch(error => console.log(error))
   }
 
+  const updateContact = (user,newNumber) => {
+    const updatedUser = {...user, number: newNumber}
+    phoneList.updateContact(baseURL, updatedUser.id, updatedUser)
+    .then(response => setPersons(persons.map(person => person.id !== user.id ? person : response)))
+    .catch(error => console.log(error))
+  }
+
   const handleAddContact = (event) => {
     event.preventDefault();
 
@@ -23,7 +30,8 @@ export default function PersonForm({persons, setPersons, baseURL}) {
     const isAdded = persons.some((person) => person.name === newName);
 
     if(isAdded) {
-      alert(`${newName} is already in the phonebook`)
+      const user = persons.find((person) => person.name === newName)
+      updateContact(user, newNumber)
     }
     else{
       addToPhonelist(newPerson)
