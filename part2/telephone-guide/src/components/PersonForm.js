@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-import axios from 'axios'
+import phoneList from '../services/phoneList';
 
-export default function PersonForm({persons, setPersons}) {
+export default function PersonForm({persons, setPersons, baseURL}) {
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
 
   const addToPhonelist = (person) => {
-    axios.post('http://localhost:3001/persons', person)
+    phoneList.addContact(baseURL, person)
+    .catch(error => console.log(error))
   }
-
 
   const handleAddContact = (event) => {
     event.preventDefault();

@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import axios from 'axios';
+import phoneList from './services/phoneList'
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
@@ -8,10 +8,13 @@ const App = () => {
   const [persons, setPersons] = useState()
   const [nameToShow, setNameToShow] = useState([])
 
+  const URL = 'http://localhost:3001/persons'
+  const {getContacts} = phoneList
+
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => setPersons(response.data))
+    getContacts(URL)
+    .then(initialContacts => setPersons(initialContacts))
+    .catch(error => console.log(error))
   },[])
 
   const handleFilter = (event) => {
@@ -28,7 +31,7 @@ const App = () => {
         <h2>Phonebook</h2>
         <Filter handleFilter={handleFilter} />
         <h2>add a new</h2>
-        <PersonForm persons={persons} setPersons={setPersons} />
+        <PersonForm persons={persons} setPersons={setPersons} baseURL={URL}/>
         <h2>Numbers</h2>
         <Persons listToShow={listToShow} />
       </>}
