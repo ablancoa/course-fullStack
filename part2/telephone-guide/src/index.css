@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.notification {
+  color: red;
+  border: 2px solid red;
+  background-color: lightcoral;
+}

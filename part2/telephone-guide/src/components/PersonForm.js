@@ -1,23 +1,12 @@
 import React, {useState} from 'react';
 import phoneList from '../services/phoneList';
 
-export default function PersonForm({persons, setPersons, baseURL}) {
+export default function PersonForm({persons, updatedContact, addToPhonelist}) {
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
 
-  const addToPhonelist = (person) => {
-    phoneList.addContact(baseURL, person)
-    .then(newPerson => setPersons(persons.concat(newPerson))) 
-    .catch(error => console.log(error))
-  }
 
-  const updateContact = (user,newNumber) => {
-    const updatedUser = {...user, number: newNumber}
-    phoneList.updateContact(baseURL, updatedUser.id, updatedUser)
-    .then(response => setPersons(persons.map(person => person.id !== user.id ? person : response)))
-    .catch(error => console.log(error))
-  }
 
   const handleAddContact = (event) => {
     event.preventDefault();
@@ -31,7 +20,7 @@ export default function PersonForm({persons, setPersons, baseURL}) {
 
     if(isAdded) {
       const user = persons.find((person) => person.name === newName)
-      updateContact(user, newNumber)
+      updatedContact(user, newNumber)
     }
     else{
       addToPhonelist(newPerson)
