@@ -12,7 +12,7 @@ const App = () => {
     axios
     .get('http://localhost:3001/persons')
     .then(response => setPersons(response.data))
-  })
+  },[])
 
   const handleFilter = (event) => {
     const filteredName = [...persons].filter(person =>(person.name).toLowerCase().includes((event.target.value).toLowerCase()))
@@ -23,12 +23,15 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <Filter handleFilter={handleFilter} />
-      <h2>add a new</h2>
-      <PersonForm persons={persons} setPersons={setPersons} />
-      <h2>Numbers</h2>
-      <Persons listToShow={listToShow} />
+      {persons && 
+      <>
+        <h2>Phonebook</h2>
+        <Filter handleFilter={handleFilter} />
+        <h2>add a new</h2>
+        <PersonForm persons={persons} setPersons={setPersons} />
+        <h2>Numbers</h2>
+        <Persons listToShow={listToShow} />
+      </>}
     </div>
   )
 }

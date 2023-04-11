@@ -1,16 +1,33 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import axios from 'axios'
 
 export default function PersonForm({persons, setPersons}) {
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
 
+  const addToPhonelist = (person) => {
+    axios.post('http://localhost:3001/persons', person)
+  }
+
+
   const handleAddContact = (event) => {
     event.preventDefault();
+
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    }
+
     const isAdded = persons.some((person) => person.name === newName);
-    isAdded ? 
-    alert(`${newName} is already in the phonebook`) :
-    setPersons(persons.concat({name: newName, number: newNumber}));    
+
+    if(isAdded) {
+      alert(`${newName} is already in the phonebook`)
+    }
+    else{
+      addToPhonelist(newPerson)
+      setPersons(persons.concat(newPerson))    
+    }
   }
 
   const handleNameChange = (event) => {
