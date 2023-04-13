@@ -65,6 +65,9 @@ app.delete("/api/persons/:id", (request, response) => {
 
 const generateId = () => Math.random() * 10000
 
+morgan.token('data', (request) => JSON.stringify(request.body))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+
 app.post("/api/persons", (request, response) => {
   const body = request.body
   const names = persons.map(person => person.name)
