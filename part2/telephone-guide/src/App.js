@@ -10,7 +10,7 @@ const App = () => {
   const [nameToShow, setNameToShow] = useState([])
   const [notification, setNotification] = useState(null)
 
-  const URL = 'http://localhost:3001/api/persons'
+  const URL = '/api/persons'
   const {getContacts, deleteContact, addContact, updateContact} = phoneList
 
   useEffect(() => {
