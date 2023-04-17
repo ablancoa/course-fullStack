@@ -16,24 +16,28 @@ app.get("/", (request, response) => {
   response.send('<h1>Welcome to telephone guide API</h1>')
 })
 
-// METODO GET
+// METODO GET - DOne
 app.get("/api/persons", (request, response) => {
   Contact.find({}).then(result => {
     response.json(result)
   })
 })
 
-// METODO GET INFO
+// METODO GET INFO - Done
 app.get("/info", (request,response)=> {
   const date = new Date()
-  const totalContacts = persons.length
 
-  response.send(`
-  <div>
-    <p>Phonebook has info for ${totalContacts} peoples</p>
-    <p>${date}</p>
-  </div>
-  `)
+  // Count all documents in a mongo db collection
+  Contact.countDocuments().then((count) =>{
+    response.send(`
+      <div>
+        <p>Phonebook has info for ${count} peoples</p>
+        <p>${date}</p>
+      </div>
+    `)
+  })
+
+  
 })
 
 // METODO GET ID
@@ -46,14 +50,15 @@ app.get("/api/persons/:id", (request, response) => {
 
 // METODO DELETE
 app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id)
-  persons = [...persons].filter(person => person.id !== id)
-
-  response.status(204).end()
+  Contact.findByIdAndRemove(request.params.id).then(result => {
+    response.status(204).end()
+  }).catch(error => {
+    response.status(400).send({ error: 'malformatted id' })
+  })
 })
 
 
-// METODO POST
+// METODO POST - Done
 morgan.token('data', (request) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
