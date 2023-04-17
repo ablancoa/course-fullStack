@@ -41,11 +41,16 @@ app.get("/info", (request,response)=> {
 })
 
 // METODO GET ID
-app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-  
-  person ? response.send(person) : response.status(404).end() 
+app.get("/api/persons/:id", (request, response, next) => {
+  Contact.findById(request.params.id)
+  .then(result => {
+    if(result){
+      response.json(result)
+    }else{
+      response.status(404).end()
+    }
+  })
+  .catch(error => next(error))
 })
 
 // METODO DELETE - Done
