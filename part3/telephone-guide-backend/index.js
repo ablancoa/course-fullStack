@@ -73,25 +73,32 @@ app.post("/api/persons", (request, response) => {
       error: 'name or number missing'
     })
   }
-
-  Contact.find({}).then(results => {
-    const names = results.map(result => result.name)
-    if(names.includes(body.name)){
-      return response.json({
-        error: "name must be unique"
-      })
-    }else{
-      const contact = new Contact ({
-        name: body.name,
-        number: body.number
-      })
-    
-      contact.save().then(savedContact => {
-        console.log('Saved')
-        response.json(savedContact)
-      })
-    }
+  const contact = new Contact ({
+    name: body.name,
+    number: body.number
   })
+
+  contact.save()
+  .then(savedContact => {
+    console.log('Saved')
+    response.json(savedContact)
+  })
+  .catch(error => response.status(400).json({error: error.message}))
+
+  // const contact = new Contact({
+  //   name: body.name,
+  //   number: body.number
+  // }
+
+  // Contact.find({}).then(results => {
+  //   const names = results.map(result => result.name)
+  //   if(names.includes(body.name)){
+  //     return response.json({
+  //       error: "name must be unique"
+  //     })
+  //   }else{
+  //   }
+  // })
 })
 
 // METODO PUT - Done
