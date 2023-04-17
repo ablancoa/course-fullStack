@@ -1,4 +1,4 @@
-// require('dotenv').config()
+require('dotenv').config()
 const Contact = require('./modules/phonebook')
 const express = require('express');
 const morgan = require('morgan');
