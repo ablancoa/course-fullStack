@@ -48,7 +48,7 @@ app.get("/api/persons/:id", (request, response) => {
   person ? response.send(person) : response.status(404).end() 
 })
 
-// METODO DELETE
+// METODO DELETE - Done
 app.delete("/api/persons/:id", (request, response, next) => {
   Contact.findByIdAndRemove(request.params.id).then(result => {
     response.status(204).end()
@@ -87,6 +87,22 @@ app.post("/api/persons", (request, response) => {
       })
     }
   })
+})
+
+// METODO PUT - Done
+app.put("/api/persons/:id", (request, response, next) => {
+  const body = request.body
+
+  const contact = {
+    name: body.name,
+    number: body.number
+  }
+
+  Contact.findByIdAndUpdate(request.params.id, contact, { new: true })
+    .then(updatedContact => {
+      response.json(updatedContact)
+    })
+    .catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
