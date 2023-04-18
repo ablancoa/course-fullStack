@@ -16,16 +16,16 @@ export default function PersonForm({persons, updatedContact, addToPhonelist}) {
       number: newNumber
     }
 
-    const isAdded = persons.some((person) => person.name === newName);
+    addToPhonelist(newPerson)
+    // const isAdded = persons.some((person) => person.name === newName);
 
-    if(isAdded) {
-      const user = persons.find((person) => person.name === newName)
-      updatedContact(user, newNumber)
-    }
-    else{
-      addToPhonelist(newPerson)
+    // if(isAdded) {
+    //   const user = persons.find((person) => person.name === newName)
+    //   updatedContact(user, newNumber)
+    // }
+    // else{
           
-    }
+    // }
   }
 
   const handleNameChange = (event) => {

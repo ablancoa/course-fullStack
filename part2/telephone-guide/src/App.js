@@ -50,18 +50,18 @@ const App = () => {
       setPersons(persons.concat(newPerson))
       launchNotification(`Added ${person.name}`, 'success')
     }) 
-    .catch(error => console.log(error))
+    .catch(error => launchNotification(error.response.data.error))
   }
 
-  const updatedContact = (user,newNumber) => {
-    const updatedUser = {...user, number: newNumber}
-    updateContact(URL, updatedUser.id, updatedUser)
-    .then(response => {
-      setPersons(persons.map(person => person.id !== user.id ? person : response))
-      launchNotification(`Updated ${user.name}`, 'success')
-    })
-    .catch(error => console.log(error))
-  }
+  // const updatedContact = (user,newNumber) => {
+  //   const updatedUser = {...user, number: newNumber}
+  //   updateContact(URL, updatedUser.id, updatedUser)
+  //   .then(response => {
+  //     setPersons(persons.map(person => person.id !== user.id ? person : response))
+  //     launchNotification(`Updated ${user.name}`, 'success')
+  //   })
+  //   .catch(error => console.log(error))
+  // }
 
   const listToShow = nameToShow.length !== 0 ? nameToShow : persons
 
@@ -73,7 +73,7 @@ const App = () => {
         {notification !== null && <Notification type={notification.type} message={notification.message}/>}
         <Filter handleFilter={handleFilter} />
         <h2>add a new</h2>
-        <PersonForm persons={persons} updatedContact={updatedContact} addToPhonelist={addToPhonelist}/>
+        <PersonForm addToPhonelist={addToPhonelist}/>
         <h2>Numbers</h2>
         <Persons listToShow={listToShow} baseURL={URL} handleDelete={handleDelete}/>
       </>}
