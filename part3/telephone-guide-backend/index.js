@@ -1,9 +1,9 @@
 require('dotenv').config()
 const Contact = require('./modules/phonebook')
-const express = require('express');
-const morgan = require('morgan');
+const express = require('express')
+const morgan = require('morgan')
 const cors = require('cors')
-const app = express();
+const app = express()
 
 
 app.use(express.static('build'))
@@ -12,23 +12,23 @@ app.use(cors())
 app.use(morgan('tiny'))
 
 // METODO HOME
-app.get("/", (request, response) => {
+app.get('/', (request, response) => {
   response.send('<h1>Welcome to telephone guide API</h1>')
 })
 
 // METODO GET - DOne
-app.get("/api/persons", (request, response) => {
+app.get('/api/persons', (request, response) => {
   Contact.find({}).then(result => {
     response.json(result)
   })
 })
 
 // METODO GET INFO - Done
-app.get("/info", (request,response)=> {
+app.get('/info', ( request,response ) => {
   const date = new Date()
 
   // Count all documents in a mongo db collection
-  Contact.countDocuments().then((count) =>{
+  Contact.countDocuments().then((count) => {
     response.send(`
       <div>
         <p>Phonebook has info for ${count} peoples</p>
@@ -36,26 +36,24 @@ app.get("/info", (request,response)=> {
       </div>
     `)
   })
-
-  
 })
 
 // METODO GET ID
-app.get("/api/persons/:id", (request, response, next) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Contact.findById(request.params.id)
-  .then(result => {
-    if(result){
-      response.json(result)
-    }else{
-      response.status(404).end()
-    }
-  })
-  .catch(error => next(error))
+    .then(result => {
+      if(result){
+        response.json(result)
+      }else{
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 // METODO DELETE - Done
-app.delete("/api/persons/:id", (request, response, next) => {
-  Contact.findByIdAndRemove(request.params.id).then(result => {
+app.delete('/api/persons/:id', (request, response, next) => {
+  Contact.findByIdAndRemove(request.params.id).then(() => {
     response.status(204).end()
   }).catch(error => next(error))
 })
@@ -65,7 +63,7 @@ app.delete("/api/persons/:id", (request, response, next) => {
 morgan.token('data', (request) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
-app.post("/api/persons", (request, response) => {
+app.post('/api/persons', (request, response) => {
   const body = request.body
 
   if(!body.name || !body.number){
@@ -79,11 +77,11 @@ app.post("/api/persons", (request, response) => {
   })
 
   contact.save()
-  .then(savedContact => {
-    console.log('Saved')
-    response.json(savedContact)
-  })
-  .catch(error => response.status(400).json({error: error.message}))
+    .then(savedContact => {
+      console.log('Saved')
+      response.json(savedContact)
+    })
+    .catch(error => response.status(400).json({ error: error.message }))
 
   // const contact = new Contact({
   //   name: body.name,
@@ -102,7 +100,7 @@ app.post("/api/persons", (request, response) => {
 })
 
 // METODO PUT - Done
-app.put("/api/persons/:id", (request, response, next) => {
+app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
 
   const contact = {
@@ -128,7 +126,7 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  }
 
   next(error)
 }
