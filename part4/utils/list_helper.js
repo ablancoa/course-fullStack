@@ -24,7 +24,7 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs, key) => {
-  const prueba = lodash.countBy(blogs, key.toString())
+  const prueba = lodash.countBy(blogs, key)
   const newArrayWriters = Object.entries(prueba).map(writer => {
     return {
       author: writer[0],
@@ -34,5 +34,15 @@ const mostBlogs = (blogs, key) => {
   return lodash.orderBy(newArrayWriters, ['blogs'], ['desc'])[0]
 }
 
+const mostLikes = (blogs, key) => {
+  const prueba = lodash.groupBy(blogs, key)
+  const newArrayWriters = Object.entries(prueba).map(writer => {
+    return {
+      author: writer[0],
+      likes: writer[1].reduce((sum, blog) => sum + blog.likes, 0)
+    }
+  })
+  return lodash.orderBy(newArrayWriters, ['likes'], ['desc'])[0]
+}
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
