@@ -1,3 +1,5 @@
+const lodash = require('lodash')
+
 const dummy = (blogs) => {
   return  Array.isArray(blogs) ? 1 : 0
 }
@@ -21,4 +23,16 @@ const favoriteBlog = (blogs) => {
 
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogs, key) => {
+  const prueba = lodash.countBy(blogs, key.toString())
+  const newArrayWriters = Object.entries(prueba).map(writer => {
+    return {
+      author: writer[0],
+      blogs: writer[1]
+    }
+  })
+  return lodash.orderBy(newArrayWriters, ['blogs'], ['desc'])[0]
+}
+
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
