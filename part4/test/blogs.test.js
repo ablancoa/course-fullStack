@@ -118,6 +118,58 @@ describe('DELETE methods', () => {
   })
 })
 
+describe('PUT methods', () => {
+  test('a blog can be updated', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const updatedBlog = {
+      title: 'Updated blog',
+      author: 'XXXXXXXXXXX',
+      url: 'Test url',
+      likes: 0
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.blogs.length
+    )
+
+    const titles = blogsAtEnd.map(r => r.title)
+
+    expect(titles).toContain('Updated blog')
+  })
+
+  test('erro if id is invalid', async () => {
+    const blogAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogAtStart[0]
+
+    const updatedBlog = {
+      title: 'Updated blog',
+      author: 'XXXXXXXXXXX',
+      url: 'Test url',
+      likes: 0
+    }
+
+    await api
+      .put('/api/blogs/1')
+      .send(updatedBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+
+    expect(blogsAtEnd).toContainEqual(JSON.parse(JSON.stringify(blogToUpdate)))
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
