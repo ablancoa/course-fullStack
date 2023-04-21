@@ -17,74 +17,105 @@ beforeEach(async () => {
   }
 })
 
-test('blogs are returned as json', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.status).toBe(200)
-  expect(response.type).toMatch(/application\/json/)
-  expect(response.body).toHaveLength(initialBlogs.length)
-}, 100000)
+describe('GET methods', () => {
+  test('blogs are returned as json', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.status).toBe(200)
+    expect(response.type).toMatch(/application\/json/)
+    expect(response.body).toHaveLength(initialBlogs.length)
+  }, 100000)
 
-test('blogs are identified by id', async () => {
-  const response = await api.get('/api/blogs')
-  response.body.forEach(blog => {
-    expect(blog.id).toBeDefined()
+  test('blogs are identified by id', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.forEach(blog => {
+      expect(blog.id).toBeDefined()
+    })
   })
 })
 
-test('a valid blog can be added', async () => {
-  const newBlog = {
-    title: 'Test blog',
-    author: 'XXXXXXXXXXX',
-    url: 'Test url',
-    likes: 0
-  }
+describe('POST methods', () => {
+  test('a valid blog can be added', async () => {
+    const newBlog = {
+      title: 'Test blog',
+      author: 'XXXXXXXXXXX',
+      url: 'Test url',
+      likes: 0
+    }
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/blogs')
-  const titles = response.body.map(r => r.title)
+    const response = await api.get('/api/blogs')
+    const titles = response.body.map(r => r.title)
 
-  expect(response.body).toHaveLength(initialBlogs.length + 1)
-  expect(titles).toContain('Test blog')
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(titles).toContain('Test blog')
+  })
+
+  test('blog without likes is set to 0', async () => {
+    const newBlog = {
+      title: 'Test blog',
+      author: 'XXXXXXXXXXX',
+      url: 'Test url'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const likes = response.body.map(r => r.likes)
+
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(likes[likes.length - 1]).toBe(0)
+  })
+
+  test('blog without title and url is not added', async () => {
+    const newBlog = {
+      author: 'XXXXXXXXXXX',
+      likes: 0
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initialBlogs.length)
+  })
 })
 
-test('blog without likes is set to 0', async () => {
-  const newBlog = {
-    title: 'Test blog',
-    author: 'XXXXXXXXXXX',
-    url: 'Test url'
-  }
+describe('DELETE methods', () => {
+  test('a blog can be deleted', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
 
-  const response = await api.get('/api/blogs')
-  const likes = response.body.map(r => r.likes)
+    const blogsAtEnd = await helper.blogsInDb()
 
-  expect(response.body).toHaveLength(initialBlogs.length + 1)
-  expect(likes[likes.length - 1]).toBe(0)
-})
+    expect(blogsAtEnd).toHaveLength(
+      helper.blogs.length - 1
+    )
 
-test('blog without title and url is not added', async () => {
-  const newBlog = {
-    author: 'XXXXXXXXXXX',
-    likes: 0
-  }
+    const titles = blogsAtEnd.map(r => r.title)
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
+    expect(titles).not.toContain(blogToDelete.title)
+  })
 
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initialBlogs.length)
+  test('erro if id is invalid', async () => {
+    await api
+      .delete('/api/blogs/1')
+      .expect(400)
+  })
 })
 
 afterAll(() => {
