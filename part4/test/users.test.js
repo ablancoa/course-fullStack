@@ -10,9 +10,9 @@ describe('when there is initially one user in db', () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'X',
-      name: 'Superuser',
-      password: 'XXXXXXXX',
+      username: 'x',
+      name: 'x',
+      password: 'x',
     }
 
     await api
@@ -23,5 +23,18 @@ describe('when there is initially one user in db', () => {
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+})
+
+describe('get all users', () => {
+  test('all users are returned', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const response = await api.get('/api/users')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body).toHaveLength(usersAtStart.length)
+    console.log(response.body)
   })
 })
