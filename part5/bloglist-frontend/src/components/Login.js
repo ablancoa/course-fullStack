@@ -9,7 +9,7 @@ export default function Login({handleSubmit, setUsername, setPassword}) {
       </label>
       <label style={{display: 'block'}}>
         password
-        <input type='text' name='password' onChange={e => setPassword(e.target.value)}/>
+        <input type='password' name='password' onChange={e => setPassword(e.target.value)}/>
       </label>
       <button type='submit'>Login</button>
     </form>
