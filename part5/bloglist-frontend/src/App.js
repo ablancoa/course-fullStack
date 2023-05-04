@@ -70,12 +70,15 @@ const App = () => {
 
   if (user === null) {
     return (
+      <>
+      {message !== null ?  <Notification message={message.message} success={message.success} /> : null}
       <Login 
         setUser={setUser} 
         handleSubmit={handleSubmit} 
         setPassword={setPassword} 
         setUsername={setUsername}
-      />
+        />
+      </>
     )
   }
 
