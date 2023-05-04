@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
+import AddBlogs from './components/AddBlogs'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -9,7 +11,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     blogService
@@ -26,6 +28,19 @@ const App = () => {
     }
   },[])
 
+  const successMessage = (newMessage) => {
+    setMessage({message: newMessage, success: true})
+    setTimeout(() => {
+      setMessage(null)
+    },3000)
+  }
+  const errorsMessage = (newMessage) => {
+    setMessage({message: newMessage, success: false})
+    setTimeout(() => {
+      setMessage(null)
+    },3000)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     
@@ -38,11 +53,11 @@ const App = () => {
      const loggedUser = await loginService.login(user);
      setUser(loggedUser)
      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedUser))
-     console.log(loggedUser)
+     successMessage('logged in successfully')
      setUsername('')
      setPassword('')
     } catch (error) {
-      console.log(error)
+      errorsMessage(`wrong credentials`)
     }
 
   }
@@ -50,6 +65,7 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.clear()
     setUser(null)
+    successMessage('logged out successfully')
   }
 
   if (user === null) {
@@ -69,7 +85,9 @@ const App = () => {
     <p>{user.username} is logged in</p>
     <button onClick={handleLogout}>logout</button>
     </div>
-
+    {message !== null ?  <Notification message={message.message} success={message.success} /> : null}
+    <h2>Create blogs</h2>
+    <AddBlogs user={user} setBlogs={setBlogs} blogs={blogs} successMessage={successMessage} errorsMessage={errorsMessage} />
     <h2>blogs</h2>
     {blogs.map(blog =>(
       <Blog key={blog.id} blog={blog} />
